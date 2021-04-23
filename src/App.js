@@ -1,10 +1,13 @@
-
+import React from 'react';
+import { MyFirstComponent } from './components/myfirstcomponent/MyFirstComponent'
+import { Routing } from './routes/Routing'
+import { NavigationBar } from './components/navigationbar/NavigationBar'
 function App() {
   return (
-    <div>
+    <Routing>
       <h1>React Tutorial!</h1>
-
-    </div>
+      < MyFirstComponent name="Andreas" age=" 37" />
+    </Routing>
 
   );
 }
