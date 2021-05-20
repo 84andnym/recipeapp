@@ -1,36 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PokemonService from '../shared/api/service/PokemonService'
 
 export const HomeView = () => {
-  const [data, setData] = useState()
-  const [search, setSearch] = useState("")
+	const [character, setCharacter] = useState([])
+	const [count, setCount] = useState(1)
 
-  const fetchDataFromExternalAPI = () => {
-    PokemonService.searchForPokemon(search.toLowerCase())
-      .then((response) => setData(response.data))
-      .catch((error) => console.log(error))
+  const fetchDataFromExternalAPI = async () => {
+		const { data } = (await PokemonService.searchForPokemon(count))
+		setCharacter(data)
   }
 
-  const displayData = () => {
-    if (data) {
-      return <div>
-        <h3>name: {data.name}</h3>
-        <h3>id: {data.id}</h3>
-        <h3>weight: {data.weight}</h3>
-        <h3>height: {data.height}</h3>
-        <h3>type: {data.types[0].type.name}</h3>
-      </div>
-    }
-  }
+	useEffect (() => {
+		fetchDataFromExternalAPI()
 
-  return (
-    <div>
-      <span>Search for pokemon: </span>
-      <input onChange={(event) => setSearch(event.target.value)} />
+	}, [count])
 
-      <br />
-      <button onClick={() => fetchDataFromExternalAPI()}>Make API call</button>
-      {displayData()}
-    </div>
-  )
+	const buttons = () => {
+		return <div>
+			<button onClick={() => setCount(count + 1)}>Increment</button> <br />
+			<button onClick={() => setCount(count - 1)}>Decrement</button>
+		</div>
+	}
+
+	const displayCharacterName = () => {
+		if (character || undefined) {
+			return <div>
+				<h2>{(character || undefined)?.name}</h2>
+			</div>
+		}
+	}
+
+	return (
+		<div>
+			<h1>inlämning 2 </h1>
+			{displayCharacterName()}
+			{buttons()}
+		</div>
+	)
 }
